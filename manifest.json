@@ -1,0 +1,32 @@
+{
+
+    "name": "NoteTaker",
+    "version": "1.0" ,
+    "description": "Better way to Notedown points ..!!" ,
+    "background": {
+        "scripts": ["background.js"]
+      },
+      "icons" : {
+          "16":"images/Notetaker.png" ,
+          "64": "images/Notetaker.png"
+      },
+      "browser_action": {
+          "default_popup": "popup.html",
+          "default_icon": "images/Notetaker.png"
+      },
+      "content_scripts": [
+          {
+              "matches": ["http://*/*","https://*/*"],
+              "css" : ["popup.css"],
+              "js" : ["popup.js"]
+          }
+      ],
+      "permissions": [
+        "contextMenus" ,
+        "storage"
+
+      ],
+      "manifest_version": 2
+
+
+}
