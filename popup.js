@@ -2,13 +2,13 @@ window.onload=function(){
     chrome.storage.sync.get("latestNote",function(data){
         let div=document.querySelector("#latestNote");
         let p =document.createElement("p")
-        p.innerHTML=data.latestNote;
+        p.innerHTML=data.latestNote.note;
         div.appendChild(p)
     })
 
 
     document.getElementById("openNotes").addEventListener("click",function(){
-        let newWindow=window.open("notes.html","Notes",height=200,width=150)
+        window.open("notes.html","_blank",height=200,width=150 ,"_blank")
     });
 
     document.getElementById("clearNotes").addEventListener("click",function(){

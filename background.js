@@ -1,5 +1,5 @@
+
 let notesArr=[];
-let notesSources=[]
 chrome.runtime.onInstalled.addListener(function() {
     chrome.contextMenus.create({title:"Add to Notes", 
     contexts:["selection"],
@@ -17,9 +17,13 @@ chrome.runtime.onInstalled.addListener(function() {
 function addNote(SelectedText)
 {
     let noteX=SelectedText.selectionText;
-    notesArr.push(noteX)
+    let url=SelectedText.pageUrl;
+    let note={"note":noteX,"source":url}
+    notesArr.push(note)
+
     chrome.storage.sync.set({"list" : notesArr})
-    chrome.storage.sync.set({"latestNote" : noteX})
+    chrome.storage.sync.set({"latestNote" : note})
+    chrome.runtime.sendMessage({"message":"reload"});
     
 }
 
@@ -45,21 +49,6 @@ chrome.runtime.onMessage.addListener(
             let index=notesArr.indexOf(request.deleteThis);
             notesArr.splice(index, 1);
             chrome.storage.sync.set({"list":notesArr})
-      }
-      else if(request.message=="exportToTxt"){
-            let allnotes=""
-            chrome.storage.sync.get("list",function(data){
-                for(i=0;i<data.list.length;i++){
-                    allnotes=data.list[i]+"\n"+allnotes;
-                }
-                var text = 'Some data I want to export';
-                var data = new Blob([text], {type: 'text/plain'});
-
-                var url = window.URL.createObjectURL(data);
-
-                sendResponse({"Url":url})
-                 
-            });
       }
         
     });

@@ -6,31 +6,67 @@ window.onload=function(){
             let noteObj=document.createElement("div");
             let button=setupButton()
             let p=document.createElement("p");
-            p.innerHTML=data.list[i];
+            p.innerHTML=data.list[i].note;
             noteObj.style.display="flex"
+            noteObj.id="note"
             noteObj.appendChild(button);
             noteObj.appendChild(p);
+            if(data.list[i].source!="#"){
+                let a=document.createElement("a")
+                a.innerHTML="view Source";
+                a.href=data.list[i].source;
+                noteObj.appendChild(a);
+            }
             div.prepend(noteObj)
 
         }
     });
     this.document.querySelector("#addPoint").addEventListener("click",function(){
-        let note=document.querySelector("#note");
-        chrome.runtime.sendMessage({data: note.value,message:"Add"});
+        let noteX=document.querySelector("#addNote");
+        let note={"note" : noteX.value, "source":"#"}
+        chrome.runtime.sendMessage({data: note,message:"Add"});
         let div=document.querySelector("#notes")
         let noteObj=document.createElement("div");
         let button=setupButton()
         let p=document.createElement("p");
-        p.innerHTML=note.value;
+        p.innerHTML=noteX.value;
         noteObj.style.display="flex"
+        noteObj.id="note"
         noteObj.appendChild(button);
         noteObj.appendChild(p);
         div.prepend(noteObj)
+        noteX.value=""
     });
 
-    this.document.querySelector("#exportToTxt").addEventListener("click",function(){
-        chrome.runtime.sendMessage({"message":"exportToTxt"})
+    this.document.querySelector("#copyNotes").addEventListener("click",function(){
+
+        let allnotes=""
+        chrome.storage.sync.get("list",function(data){
+            for(i=0;i<data.list.length;i++){
+                allnotes=data.list[i].note+"\n"+allnotes;
+            }
+            let input=document.createElement("textarea");
+            let body=document.querySelector("body")
+            input.setAttribute("value",allnotes)
+            input.innerHTML=allnotes
+            body.appendChild(input)
+            input.select();
+            
+            document.execCommand("copy");
+            body.removeChild(input)
+        
+        })
+    });
+    this.document.getElementById("closeWindow").addEventListener("click",function(){
+        window.close();
     })
+
+    document.getElementById("clearNotes").addEventListener("click",function(){
+        let k=confirm("are you sure?")
+        if(k)
+            chrome.runtime.sendMessage({clear: "clearAll"});
+        location.reload()
+    });
 
     function setupButton()
     {
@@ -44,11 +80,16 @@ window.onload=function(){
             let parent=button.parentNode;
             let div=document.querySelector("#notes")
             div.removeChild(parent)
-            chrome.runtime.sendMessage({"deleteThis":button.nextElementSibling.innerHTML ,"message":"deleteNote"},function(response){
-                document.getElementById("download_link").href =response.Url
-            })
-
-        })
+            chrome.runtime.sendMessage({"deleteThis":button.nextElementSibling.innerHTML ,"message":"deleteNote"})
+        });
         return button;
     }
+
+    chrome.runtime.onMessage.addListener(function(request){
+        if(request.message=="reload")
+        {
+            location.reload()
+        }
+    })
+
 };
