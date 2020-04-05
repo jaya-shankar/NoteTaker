@@ -14,6 +14,16 @@
           "default_popup": "popup.html",
           "default_icon": "images/Notetaker.png"
       },
+
+      "commands": {
+        "toggle": {
+          "suggested_key": {
+            "default": "Ctrl+Q",
+            "mac": "Command+E"
+          },
+          "description": "Add to Notes"
+        }
+       } ,
       "content_scripts": [
           {
               "matches": ["http://*/*","https://*/*"],
@@ -21,10 +31,18 @@
               "js" : ["popup.js"]
           }
       ],
+      "content_scripts": [
+        {
+            "matches": ["http://*/*","https://*/*"],
+            "js" : ["shortcut.js"]
+        }
+    ],
       "permissions": [
         "contextMenus" ,
-        "storage"
-
+        "storage" ,
+        "tabs" ,
+        "activeTab"
+ 
       ],
       "manifest_version": 2
 

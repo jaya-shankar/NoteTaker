@@ -58,7 +58,12 @@ window.onload=function(){
         })
     });
     this.document.getElementById("closeWindow").addEventListener("click",function(){
-        window.close();
+        chrome.tabs.getSelected(null, function(tab){
+            alert(tab.id)
+            alert(typeof(tab.id))
+            //chrome.tab.remove(tab.id)
+            
+        });
     })
 
     document.getElementById("clearNotes").addEventListener("click",function(){

@@ -8,3 +8,15 @@
     padding-left: 0px;
     padding-top: 0px;
 };
+
+.title
+{
+    text-align: center;
+    font-size: xx-large;
+    font-style: oblique;
+    font-size: -webkit-xxx-large;
+    font-weight: initial;
+    font-family: cursive;
+    color: midnightblue;
+
+};

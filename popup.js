@@ -4,11 +4,13 @@ window.onload=function(){
         let p =document.createElement("p")
         p.innerHTML=data.latestNote.note;
         div.appendChild(p)
-    })
 
+    
 
+    });
     document.getElementById("openNotes").addEventListener("click",function(){
-        window.open("notes.html","_blank",height=200,width=150 ,"_blank")
+        
+        chrome.tabs.create({url:"notes.html"})
     });
 
     document.getElementById("clearNotes").addEventListener("click",function(){
@@ -16,5 +18,9 @@ window.onload=function(){
         if(k)
             chrome.runtime.sendMessage({clear: "clearAll"});
     });
+    
+
+
+
 
 };

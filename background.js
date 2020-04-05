@@ -24,6 +24,7 @@ function addNote(SelectedText)
     chrome.storage.sync.set({"list" : notesArr})
     chrome.storage.sync.set({"latestNote" : note})
     chrome.runtime.sendMessage({"message":"reload"});
+
     
 }
 
@@ -32,23 +33,42 @@ function undoLast()
     notesArr.pop()
     chrome.storage.sync.set({"latestNote": notesArr[notesArr.length-1]})
     chrome.storage.sync.set({"list" : notesArr})
+    chrome.runtime.sendMessage({"message":"reload"});
 }
+
+chrome.commands.onCommand.addListener(function(command) { 
+    if (command == "toggle") 
+    {
+        alert("hello")
+        chrome.tabs.executeScript({
+            file: "shortcut.js"
+        
+          });
+    
+    }	
+
+    });
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if (request.clear == "clearAll"){
             notesArr=[];
             chrome.storage.sync.set({"list":notesArr})
-            chrome.storage.sync.set({"latestNote":"🖋Nothing to Show!!"})
+            let latestNote={"note":"🖋Nothing to Show!!"}
+            chrome.storage.sync.set({"latestNote":latestNote})
       }
       else if(request.message=="Add"){
             notesArr.push(request.data)
             chrome.storage.sync.set({"list":notesArr})
+            chrome.storage.sync.set({"latestNote" : request.data})
+            chrome.runtime.sendMessage({"message":"reload"});
+
       }
       else if(request.message=="deleteNote"){
             let index=notesArr.indexOf(request.deleteThis);
             notesArr.splice(index, 1);
             chrome.storage.sync.set({"list":notesArr})
       }
+      
         
     });
