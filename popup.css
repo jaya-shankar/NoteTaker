@@ -1,8 +1,12 @@
 #popupbody{
-    height: 100px;
-    width: 100px;
+    height: auto;
+    width: 300px;
 };
 
 #openTab{
     width: 45px;
 };
+
+#latestNote{
+    font-size: large;
+}

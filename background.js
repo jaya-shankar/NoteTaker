@@ -39,12 +39,11 @@ function undoLast()
 chrome.commands.onCommand.addListener(function(command) { 
     if (command == "toggle") 
     {
-        alert("hello")
+        
         chrome.tabs.executeScript({
             file: "shortcut.js"
-        
           });
-    
+          chrome.runtime.sendMessage({"message":"shortcut"})
     }	
 
     });
@@ -66,7 +65,12 @@ chrome.runtime.onMessage.addListener(
       }
       else if(request.message=="deleteNote"){
             let index=notesArr.indexOf(request.deleteThis);
-            notesArr.splice(index, 1);
+            if(index==-1){
+                notesArr.splice(index, 1);
+                chrome.storage.sync.set({"latestNote": notesArr[notesArr.length-1]})
+            }
+            else
+                notesArr.splice(index, 1);
             chrome.storage.sync.set({"list":notesArr})
       }
       
