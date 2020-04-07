@@ -65,12 +65,22 @@ chrome.runtime.onMessage.addListener(
       }
       else if(request.message=="deleteNote"){
             let index=notesArr.indexOf(request.deleteThis);
-            if(index==-1){
-                notesArr.splice(index, 1);
-                chrome.storage.sync.set({"latestNote": notesArr[notesArr.length-1]})
-            }
-            else
-                notesArr.splice(index, 1);
+            let latestNote
+            chrome.storage.sync.get("latestNote",function(data){
+                latestNote=data.latestNote.note;
+
+            
+                if(request.deleteThis==latestNote){
+                    notesArr.splice(index, 1);
+                    if(notesArr.length==0)
+                        chrome.storage.sync.set({"latestNote":{"note" : "🖋Nothing to Show!!"}})
+                    else
+                        chrome.storage.sync.set({"latestNote": notesArr[notesArr.length-1]})
+                }
+                else
+                    notesArr.splice(index, 1);
+
+            });
             chrome.storage.sync.set({"list":notesArr})
       }
       
