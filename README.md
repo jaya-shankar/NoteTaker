@@ -12,9 +12,9 @@
   
 ` git clone https://github.com/jaya-shankar/NoteTaker_chrome-extension.git `
 
-once the above command is executed the local copy of the project will be downloaded into your system
+once the above command is executed a copy of the project will be downloaded into your system
 
-open your chrome and go to setting(mac: __Cmd__ + __,__ ) and click on extensions option 
+Now, open your chrome and go to setting(mac: __Cmd__ + __,__ ) and click on extensions option 
 ![Image extension option](/ReadmeImgs/extensionoption.png)
 Once you click on it enable Developer Mode present at top right position of the screen
 
