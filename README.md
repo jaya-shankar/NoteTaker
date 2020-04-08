@@ -10,7 +10,7 @@
 ## Installation:
   Open up your terminal window paste the below command
   
-` git clone https://github.com/jaya-shankar/NoteTaker.git `
+` git clone https://github.com/jaya-shankar/NoteTaker_chrome-extension.git `
 
 once the above command is executed the local copy of the project will be downloaded into your system
 
